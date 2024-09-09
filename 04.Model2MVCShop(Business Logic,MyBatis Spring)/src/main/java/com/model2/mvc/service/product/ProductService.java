@@ -13,20 +13,12 @@ public interface ProductService{
 	//상품 정보 조회
 	//public void findProduct(ProductVO productVO) throws Exception;
 	
-	public void addProduct(Product product) throws Exception;
+	public int addProduct(Product product) throws Exception;
 	
-	public Product getProduct(int product) throws Exception;
+	public Product getProduct(int prodNo) throws Exception;
 	
-	//상품 목록 조회
-	//ArrayList와 HashMap
-	//public ArrayList<Product>getProductList(UserVO userVO) throws Exception;
-	public Map<String, Object> getProductList(Search search) throws Exception;
+	public int updateProduct(Product product) throws Exception;
 	
-	
-	//상품등록
-	//public  void insertProduct(ProductVO productVO)throws Exception;
-	
-	//상품 정보수
-	public void updateProduct(Product product)throws Exception;
+	public Map<String,Object> getProductList(Search search) throws Exception;
 	
 }

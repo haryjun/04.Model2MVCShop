@@ -12,15 +12,14 @@ import com.model2.mvc.service.user.impl.UserServiceImpl;
 
 public class LoginAction extends Action{
 
-	@Override
 	public String execute(HttpServletRequest request,	HttpServletResponse response) throws Exception {
 		
 		User user=new User();
 		user.setUserId(request.getParameter("userId"));
 		user.setPassword(request.getParameter("password"));
 		
-		UserService userService=new UserServiceImpl();
-		User dbUser=userService.loginUser(user);
+		UserService service=new UserServiceImpl();
+		User dbUser=service.loginUser(user);
 		
 		HttpSession session=request.getSession();
 		session.setAttribute("user", dbUser);
