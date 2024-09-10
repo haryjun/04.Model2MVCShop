@@ -6,22 +6,25 @@ import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.User;
 
 
-//==> È¸¿ø°ü¸®¿¡¼­ ¼­ºñ½ºÇÒ ³»¿ë Ãß»óÈ­/Ä¸½¶È­ÇÑ Service  Interface Definition  
+//==> È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½È­/Ä¸ï¿½ï¿½È­ï¿½ï¿½ Service  Interface Definition  
 public interface UserService {
 	
-	// È¸¿ø°¡ÀÔ
+	// È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public void addUser(User user) throws Exception;
 	
-	// ³»Á¤º¸È®ÀÎ / ·Î±×ÀÎ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È®ï¿½ï¿½ / ï¿½Î±ï¿½ï¿½ï¿½
 	public User getUser(String userId) throws Exception;
 	
-	// È¸¿øÁ¤º¸¸®½ºÆ® 
+	// È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® 
 	public Map<String , Object> getUserList(Search search) throws Exception;
 	
-	// È¸¿øÁ¤º¸¼öÁ¤
+	// È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public void updateUser(User user) throws Exception;
 	
-	// È¸¿ø ID Áßº¹ È®ÀÎ
+	// È¸ï¿½ï¿½ ID ï¿½ßºï¿½ È®ï¿½ï¿½
 	public boolean checkDuplication(String userId) throws Exception;
+	
+	// loginUser
+			public User loginUser(User user) throws Exception;
 	
 }

@@ -18,7 +18,16 @@ import com.model2.mvc.service.product.ProductService;
 import junit.framework.Assert;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:config/commonservice.xml" })
+/*
+ * @ContextConfiguration(locations = { "classpath:config/commonservice.xml" })
+ */
+
+
+@ContextConfiguration(locations = {"classpath:config/context-common.xml",
+										"classpath:config/context-aspect.xml",
+										"classpath:config/context-mybatis.xml",
+										"classpath:config/context-transaction.xml"})
+
 public class ProductServiceTest {
 
 	@Autowired
@@ -32,9 +41,23 @@ public class ProductServiceTest {
 	//@Test
 	public void testGetProduct() throws Exception {
 
+		
+		
+		
+		/*
+		 * product.setProdNo(5555);
+		 * product.setProdName("nomber 5 refactoring Name test");
+		 * product.setProdDetail("nomber 5 refactoring Detail test");
+		 * product.setManuDate("20240909"); product.setPrice(5555);
+		 * product.setFileName("nomber 5 refactoring FileName test");
+		 * product.setProTranCode("0");
+		 */
+		
+
+		
 		Product product = new Product("5번 테스트 앱", "5번 테스트 앱 디테일", "20201114", 55555, "5번테스트앱사진", "0");
 		Assert.assertEquals(product.getProdName(), productService.getProduct(10032).getProdName());
-		// Assert.assertEquals(0, productService.getProduct(10032));
+		Assert.assertEquals(0, productService.getProduct(10032));
 
 	}
 

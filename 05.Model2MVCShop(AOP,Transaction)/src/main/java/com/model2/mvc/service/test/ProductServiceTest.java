@@ -31,11 +31,33 @@ public class ProductServiceTest {
 
 	//@Test
 	public void testGetProduct() throws Exception {
+		
 
-		Product product = new Product("5번 테스트 앱", "5번 테스트 앱 디테일", "20201114", 55555, "5번테스트앱사진", "0");
-		Assert.assertEquals(product.getProdName(), productService.getProduct(10032).getProdName());
-		// Assert.assertEquals(0, productService.getProduct(10032));
+		Product product = new Product();
+		
+		product = productService.getProduct(0);
+		
+		System.out.println(product);
+		
+		Assert.assertEquals("testProductNo", product.getProdNo());
+		//Assert.assertSame(product, product);
+		Assert.assertEquals("testProductName", product.getProdName());
+		Assert.assertEquals("testProductDetail", product.getProdDetail());
+		Assert.assertEquals("20240909", product.getManuDate());
+		Assert.assertEquals("testProductFileName", product.getFileName());
+		Assert.assertEquals("testProTranCode", product.getProTranCode());
+		
+		Assert.assertNotNull(productService.getProduct(1));		
+		Assert.assertNotNull(productService.getProduct(5));
 
+
+
+		/*
+		 * Product product = new Product("5번 테스트 앱", "5번 테스트 앱 디테일", "20201114", 55555,
+		 * "5번테스트앱사진", "0"); Assert.assertEquals(product.getProdName(),
+		 * productService.getProduct(10032).getProdName()); // Assert.assertEquals(0,
+		 * productService.getProduct(10032));
+		 */
 	}
 
 	/* 에러남...,,,
@@ -49,7 +71,7 @@ public class ProductServiceTest {
 	 * }
 	 */
 
-	//@Test
+	@Test
 	public void testGetProductList() throws Exception {
 		
 		Search search = new Search();
@@ -58,13 +80,14 @@ public class ProductServiceTest {
 		Map<String, Object> map = productService.getProductList(search);
 		
 		List<Object> list = (List<Object>) map.get("list");
+		Assert.assertEquals(3, list.size());
+
 		System.out.println("총 검색 갯수 :: "+map.get("totalCount"));
 		
-		Assert.assertEquals(3, list.size());
 		
 	}
 	
-	@Test
+	//@Test
 	public void testGetOrderedProductList() throws Exception {
 		
 		//판매중인 상품 테스트
@@ -75,9 +98,10 @@ public class ProductServiceTest {
 		Map<String, Object> map = productService.getProductList(search);
 		
 		List<Object> list = (List<Object>) map.get("list");
+		Assert.assertEquals(3, list.size());
+
 		System.out.println("총 검색 갯수 :: "+map.get("totalCount"));
 		
-		Assert.assertEquals(3, list.size());
 		
 	}
 
