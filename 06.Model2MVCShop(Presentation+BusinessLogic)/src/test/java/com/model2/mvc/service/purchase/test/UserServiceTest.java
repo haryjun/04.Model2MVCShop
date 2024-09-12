@@ -1,4 +1,4 @@
-package com.model2.mvc.service.user.test;
+package com.model2.mvc.service.purchase.test;
 
 import java.util.List;
 import java.util.Map;
@@ -239,7 +239,7 @@ public class UserServiceTest {
 	 	Assert.assertEquals(3, list.size());
 	 	
 		//==> console »Æ¿Œ
-	 	System.out.println(list);
+	 	//System.out.println(list);
 	 	
 	 	Integer totalCount = (Integer)map.get("totalCount");
 	 	System.out.println(totalCount);

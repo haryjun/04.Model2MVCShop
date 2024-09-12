@@ -1,4 +1,4 @@
-package com.model2.mvc.service.user.test;
+package com.model2.mvc.service.product.test;
 
 import java.util.List;
 import java.util.Map;
@@ -33,11 +33,11 @@ import com.model2.mvc.service.user.UserService;
 																	"classpath:config/context-mybatis.xml",
 																	"classpath:config/context-transaction.xml" })
 //@ContextConfiguration(locations = { "classpath:config/context-common.xml" })
-public class UserServiceTest {
+public class ProductServiceTest {
 
 	//==>@RunWith,@ContextConfiguration 이용 Wiring, Test 할 instance DI
 	@Autowired
-	@Qualifier("userServiceImpl")
+	@Qualifier("productServiceImpl")
 	private UserService userService;
 
 	//@Test
@@ -239,7 +239,7 @@ public class UserServiceTest {
 	 	Assert.assertEquals(3, list.size());
 	 	
 		//==> console 확인
-	 	System.out.println(list);
+	 	//System.out.println(list);
 	 	
 	 	Integer totalCount = (Integer)map.get("totalCount");
 	 	System.out.println(totalCount);
