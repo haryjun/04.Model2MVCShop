@@ -93,27 +93,9 @@ public class Product {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Product [prodNo=");
-		builder.append(prodNo);
-		builder.append(", prodName=");
-		builder.append(prodName);
-		builder.append(", prodDetail=");
-		builder.append(prodDetail);
-		builder.append(", manuDate=");
-		builder.append(manuDate);
-		builder.append(", price=");
-		builder.append(price);
-		builder.append(", fileName=");
-		builder.append(fileName);
-		builder.append(", regDate=");
-		builder.append(regDate);
-		builder.append(", proTranCode=");
-		builder.append(proTranCode);
-		builder.append(", count=");
-		builder.append(count);
-		builder.append("]");
-		return builder.toString();
+		return "ProductVO : [prodName] "+prodName+" [prodNo] "+prodNo+" [prodDetail] "+prodDetail+" [manuDate] "+ manuDate
+				+" [price] "+price+" [fileName] "+fileName+" [regDate] "+regDate+" [proTranCode] "+proTranCode+" [count] "+count;
+
 	}
 
 }

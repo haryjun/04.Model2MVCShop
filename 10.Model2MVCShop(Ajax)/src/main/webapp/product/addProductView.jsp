@@ -37,21 +37,23 @@ function fncAddProduct(){
 		return;
 	}
 
-	$('form').attr("action", "/product/addProduct").attr("enctype", "multipart/form-data").submit()
+	$('form').attr("method" , "POST").attr("action", "/product/addProduct").submit()
 }
 
-function resetData(){
+/* function resetData(){
 	document.detailForm.reset();
-}
+} */ 
 
 	$(function(){
 		$('img[src="../images/ct_icon_date.gif"]').on("click", function(){
 			show_calendar('document.detailForm.manuDate', document.detailForm.manuDate.value);
-			//show_calendar("$('input[name="manuDate"]')", $('input[name="manuDate"]').val());
+			//show_calendar($("$('input[name="manuDate"]')", '$(input[name="manuDate"]')).val());
+			//"$('input[name="manuDate"]')", 
 		})
 		
 		$('td.ct_btn01:contains("취소")').on("click", function(){
-			resetData();
+			//resetData();
+			$("form")[0].reset();
 		})
 		
 		$('td.ct_btn01:contains("등록")').on("click", function(){
@@ -63,7 +65,7 @@ function resetData(){
 
 <body bgcolor="#ffffff" text="#000000">
 
-<form name="detailForm" method="post" >
+<form name="detailForm" method="post" enctype="multipart/form-data">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -152,7 +154,7 @@ function resetData(){
 		<td width="104" class="ct_write">상품이미지</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<input		type="file" name="fileNameForReal" class="ct_input_g" 
+			<input		type="file" name="fileName" class="ct_input_g" 
 							style="width: 200px; height: 19px" maxLength="13"/>
 		</td>
 	</tr>

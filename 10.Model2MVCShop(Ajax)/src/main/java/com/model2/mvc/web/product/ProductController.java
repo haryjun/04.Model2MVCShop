@@ -1,8 +1,10 @@
 package com.model2.mvc.web.product;
 
+import java.io.File;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
@@ -45,19 +48,58 @@ public class ProductController {
 		System.out.println(this.getClass());
 	}
 	
-	@RequestMapping(value="/addProduct", method=RequestMethod.GET)
+	@RequestMapping(value="addProduct", method=RequestMethod.GET)
 	public String addProduct() throws Exception{
 		System.out.println("/product/addProduct : GET");
 		
 		return "redirect:/product/addProductView.jsp";
 	}
+	@RequestMapping(value="addProduct", method=RequestMethod.POST)
+	public String addProduct(@ModelAttribute("product") Product product) throws Exception{
+		
+		System.out.println("/product/addProduct : POST");
+		
+		//Business Logic
+		productService.addProduct(product);
+		return "redirect:/product/listProduct.jsp";
+	}
 	
+	/*
 	@RequestMapping(value="/addProduct", method=RequestMethod.POST)
+	public String addProduct(@ModelAttribute("product") Product product,
+			@RequestParam("fileNameForReal") MultipartFile file) throws Exception{
+		System.out.println("/product/addProduct : POST" + product);
+		
+		//file처리
+		if(!file.isEmpty()) {
+			String originalFileName = file.getOriginalFilename();
+			product.setFileName(originalFileName);
+			
+			//file저장장소
+			String filePath = "/upload/"+originalFileName;
+			File dest = new File(filePath);
+			
+			/*
+			 * // 업로드 디렉토리가 없으면 생성 
+			 * if (!dest.getParentFile().exists()) {
+			 * dest.getParentFile().mkdirs(); 
+			 * }
+			 	
+			//저장
+			file.transferTo(dest);
+		}
+		
+		productService.addProduct(product);
+		return "redirect:/product/addProduct.jsp";
+	}
+	*/
+/*	@RequestMapping(value="/addProduct", method=RequestMethod.POST)
 	public String addProduct(@ModelAttribute("product") Product product) throws Exception{
 		System.out.println("/product/addProduct : POST");
 		productService.addProduct(product);
-		return "forward:/product/addProduct.jsp";
-	}
+		return "redirect:/product/addProduct.jsp";
+	}*/
+	
 	
 	@RequestMapping("/getProduct")
 	public String getProduct(@RequestParam("prodNo") int prodNo, @RequestParam(value="menu", required=false) String menu, @CookieValue(value="history", required=false) Cookie cookie, HttpServletResponse response, Model model) throws Exception{
@@ -65,7 +107,7 @@ public class ProductController {
 		
 		model.addAttribute("product", productService.getProduct(prodNo));
 		
-		//CookieValue String으로 받았을  
+		//CookieValue <= String  
 //		if(cookie!=null) {	
 //			Cookie cookieee = new Cookie("history", cookie+","+new Integer(prodNo).toString());
 //			cookieee.setPath("/");
@@ -76,7 +118,7 @@ public class ProductController {
 //			response.addCookie(cookieee);
 //		}
 		
-		//CookieValue Cookie로 받았을 때
+		//CookieValue <= Cookie
 		if(cookie!=null) {
 			if( !(cookie.getValue().contains(new Integer(prodNo).toString())) ){
 				cookie.setValue(cookie.getValue()+","+new Integer(prodNo).toString());
@@ -112,7 +154,7 @@ public class ProductController {
 		return "forward:/product/getProduct";
 	}
 	
-	@RequestMapping("/deleteProduct")
+	@RequestMapping(value = "deleteProduct")
 	public String deleteProduct(@RequestParam("prodNo") int prodNo) throws Exception{
 		System.out.println("/product/deleteProduct");
 		
@@ -121,9 +163,9 @@ public class ProductController {
 		return "redirect:/product/listProduct?menu=manage";
 	}
 	
-	@RequestMapping("/listProduct")
-	public String listProduct(@ModelAttribute("search") Search search, Model model) throws Exception{
-		System.out.println("/listProduct");
+	@RequestMapping(value = "listProduct")
+	public String listProduct(@ModelAttribute("search") Search search, Model model, HttpServletRequest request) throws Exception{
+		System.out.println("product/listProduct : GET / POST");
 		
 		if(search.getCurrentPage() ==0 ){
 			search.setCurrentPage(1);

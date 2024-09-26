@@ -26,15 +26,19 @@ public interface ProductDao {
 	 * public int deleteProduct(String prodName) throws Exception;
 	 */
 
-	public int addProduct(Product product) throws Exception;
+	public void addProduct(Product product) throws Exception;
 
 	public Product getProduct(int prodNo) throws Exception;
 
-	public int updateProduct(Product product) throws Exception;
+	public void updateProduct(Product product) throws Exception;
 
-	public List<Object> getProductList(Search search) throws Exception;
+	public List<Product> getProductList(Search search) throws Exception;
 	
 	public void deleteProduct(int prodNo)throws Exception;
+	
+	public int getTotalCount(Search search) throws Exception;
+
+	public List<String> getAutoComplete(Search search) throws Exception;
 }
 
 

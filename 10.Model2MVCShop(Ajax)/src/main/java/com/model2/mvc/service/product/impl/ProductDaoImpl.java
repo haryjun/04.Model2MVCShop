@@ -1,5 +1,6 @@
 package com.model2.mvc.service.product.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -9,44 +10,77 @@ import org.springframework.stereotype.Repository;
 
 import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.Product;
+import com.model2.mvc.service.domain.User;
 import com.model2.mvc.service.product.ProductDao;
+
 
 @Repository("productDaoImpl")
 public class ProductDaoImpl implements ProductDao {
-
+	//field
 	@Autowired
 	@Qualifier("sqlSessionTemplate")
 	private SqlSession sqlSession;
-
+	
+	//constructor
 	public ProductDaoImpl() {
-		System.out.println("::" + getClass() + ".default Constructor Call....");
+		// TODO Auto-generated constructor stub
+	}
+
+	public SqlSession getSqlSession() {
+		return sqlSession;
+	}
+
+	public void setSqlSession(SqlSession sqlSession) {
+		this.sqlSession = sqlSession;
+	}
+
+	public void addProduct(Product product) throws Exception {
+		sqlSession.insert("ProductMapper.addProduct", product);
 	}
 
 	@Override
-	public int addProduct(Product product) throws Exception {
-		product.setManuDate(product.getManuDate().replaceAll("-", ""));
-		return sqlSession.insert("ProductMapper.insertProduct", product);
+	public List<Product> getProductList(Search search) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("ProductMapper.getProductList", search);
 	}
 
 	@Override
 	public Product getProduct(int prodNo) throws Exception {
-		return sqlSession.selectOne("ProductMapper.findProduct", prodNo);
+		return sqlSession.selectOne("ProductMapper.getProduct", prodNo);
 	}
 
 	@Override
-	public int updateProduct(Product product) throws Exception {
-		return sqlSession.update("ProductMapper.updateProduct", product);
-	}
-
-	@Override
-	public List<Object> getProductList(Search search) throws Exception {
-		return sqlSession.selectList("ProductMapper.getProductList", search);
+	public void updateProduct(Product product) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update("ProductMapper.updateProduct", product);
 	}
 
 	@Override
 	public void deleteProduct(int prodNo) throws Exception {
 		// TODO Auto-generated method stub
-		
+		sqlSession.delete("ProductMapper.deleteProduct", prodNo);
+	}
+	
+	public int getTotalCount(Search search) throws Exception {
+		return sqlSession.selectOne("ProductMapper.getTotalCount", search);
 	}
 
-}
+	@Override
+	public List<String> getAutoComplete(Search search) throws Exception {
+		// TODO Auto-generated method stub
+		List<Product> list = sqlSession.selectList("ProductMapper.getAutoComplete", search);
+		List<String> returnList = new ArrayList();
+		if(search.getSearchCondition().equals("0")) {
+			for(Product prod : list) {
+				returnList.add(new Integer(prod.getProdNo()).toString());
+			}
+		}else if(search.getSearchCondition().equals("1")) {
+			for(Product prod : list) {
+				returnList.add(prod.getProdName());
+			}
+		}
+		return returnList;
+	}
+
+
+}	
