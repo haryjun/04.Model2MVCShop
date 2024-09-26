@@ -96,7 +96,7 @@
 	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
 		<tr>
 			<td align="right">
-					(상품 가격 검색? <input type="checkbox" name="priceSearch" ${search.priceSearch ? "checked" : ""}> 
+					(상품 가격 검색 : <input type="checkbox" name="priceSearch" ${search.priceSearch ? "checked" : ""}> 
 			<input 	type="text" name="searchKeyword1" value="${!empty search.searchKeyword1 ? search.searchKeyword1 : ""}" 
 			
 								class="ct_input_g" style="width:100px; height:19px" >
@@ -141,10 +141,10 @@
 	
 		
 	<td align="right">
-			&nbsp;&nbsp;&nbsp;&nbsp;(정렬기준
+			&nbsp;&nbsp;&nbsp;&nbsp;( 정렬기준 : 
 			<input type=radio name="sorting" value="prodNo" ${empty search.sorting || (!empty search.sorting && search.sorting=='prodNo') ? "checked" : ""}>상품번호
-			<input type=radio name="sorting" value="priceASC" ${!empty search.sorting && search.sorting=='priceASC' ? "checked" : ""}>가격낮은순
-			<input type=radio name="sorting" value="priceDESC" ${!empty search.sorting && search.sorting=='priceDESC' ? "checked" : ""}>가격높은순
+			| <input type=radio name="sorting" value="priceASC" ${!empty search.sorting && search.sorting=='priceASC' ? "checked" : ""}> 가격낮은순
+			| <input type=radio name="sorting" value="priceDESC" ${!empty search.sorting && search.sorting=='priceDESC' ? "checked" : ""}> 가격높은순
 			)</td>
 		</tr>
 	</table>
@@ -218,9 +218,11 @@
 				</c:if>
 			</td>
 		</tr>
+			
 		<tr>
-			<td id="${product.prodNo}" colspan="11" height="1"></td>
-		</tr>	
+			<td id="${product.prodNo}" colspan="11" bgcolor="D6D7D6" height="1"></td>
+		</tr>
+		
 	</c:forEach>
 	
 	</table>

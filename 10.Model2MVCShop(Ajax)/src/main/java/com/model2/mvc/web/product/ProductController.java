@@ -1,202 +1,146 @@
 package com.model2.mvc.web.product;
 
-import java.io.File;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.Product;
 import com.model2.mvc.service.product.ProductService;
 
+
+//==> ÏÉÅÌíàÍ¥ÄÎ¶¨ Controller
 @Controller
 @RequestMapping("/product/*")
 public class ProductController {
-
-	/// Field
+	
+	///Field
 	@Autowired
 	@Qualifier("productServiceImpl")
 	private ProductService productService;
-
-	@Value("#{commonProperties['pageUnit'] ?: 5}")
+	//setter Method Íµ¨ÌòÑ ÏïäÏùå
+	
+	@Value("#{commonProperties['pageUnit']}")
+	//@Value("#{commonProperties['pageUnit'] ?: 3}")
 	int pageUnit;
-
-	@Value("#{commonProperties['pageSize'] ?: 5}")
+	
+	@Value("#{commonProperties['pageSize']}")
+	//@Value("#{commonProperties['pageSize'] ?: 2}")
 	int pageSize;
-	
-	@Value("#{commonProperties['path']}")
-	String path;
-	
-	public ProductController() {
+		
+	public ProductController(){
 		System.out.println(this.getClass());
-		
 	}
-
-	@RequestMapping(value="addProduct", method = RequestMethod.GET)
-	public ModelAndView addProduct()  {
-		System.out.println("addProduct : GET");
-		System.out.println(path);
-		return new ModelAndView("forward:/product/addProductView.jsp");
-	}
-
 	
-	@RequestMapping(value="addProduct", method = RequestMethod.POST)
-	public ModelAndView addProduct(@ModelAttribute("product") Product product, MultipartHttpServletRequest request) throws Exception {
-
-		System.out.println(path);
-		System.out.println("addProduct : POST");
+	@RequestMapping(value="/addProduct", method=RequestMethod.GET)
+	public String addProduct() throws Exception{
+		System.out.println("/product/addProduct : GET");
 		
-		List<MultipartFile> fileList = request.getFiles("uploadFile");
-		String fileName = "";
+		return "redirect:/product/addProductView.jsp";
+	}
+	
+	@RequestMapping(value="/addProduct", method=RequestMethod.POST)
+	public String addProduct(@ModelAttribute("product") Product product) throws Exception{
+		System.out.println("/product/addProduct : POST");
+		productService.addProduct(product);
+		return "forward:/product/addProduct.jsp";
+	}
+	
+	@RequestMapping("/getProduct")
+	public String getProduct(@RequestParam("prodNo") int prodNo, @RequestParam(value="menu", required=false) String menu, @CookieValue(value="history", required=false) Cookie cookie, HttpServletResponse response, Model model) throws Exception{
+		System.out.println("/product/getProduct");
 		
-		for(MultipartFile mf : fileList) {
-			fileName += mf.getOriginalFilename()+"/";
-			String saveFile = path+mf.getOriginalFilename();
-			mf.transferTo(new File(saveFile));
-			
+		model.addAttribute("product", productService.getProduct(prodNo));
+		
+		//CookieValue StringÏúºÎ°ú Î∞õÏïòÏùÑ ¬ã¬ö 
+//		if(cookie!=null) {	
+//			Cookie cookieee = new Cookie("history", cookie+","+new Integer(prodNo).toString());
+//			cookieee.setPath("/");
+//			response.addCookie(cookieee);
+//		}else {
+//			Cookie cookieee = new Cookie("history", new Integer(prodNo).toString());
+//			cookieee.setPath("/");
+//			response.addCookie(cookieee);
+//		}
+		
+		//CookieValue CookieÎ°ú Î∞õÏïòÏùÑ Îïå
+		if(cookie!=null) {
+			if( !(cookie.getValue().contains(new Integer(prodNo).toString())) ){
+				cookie.setValue(cookie.getValue()+","+new Integer(prodNo).toString());
+				cookie.setPath("/");
+			}
+			response.addCookie(cookie);
+		}else {
+			Cookie doNotHaveCookie = new Cookie("history", new Integer(prodNo).toString());
+			doNotHaveCookie.setPath("/");
+			response.addCookie(doNotHaveCookie);
 		}
 		
-		product.setFileName(fileName);
-		productService.addProduct(product);
-/*		
-		//¥‹¿œ æ˜∑ŒµÂ
-		Map<String, MultipartFile> files = request.getFileMap();
-		CommonsMultipartFile cmf  = (CommonsMultipartFile) files.get("uploadFile");
-		
-		String uploadPath = path + cmf.getOriginalFilename();
-		
-		File file = new File(uploadPath);
-		System.out.println(uploadPath);
-		cmf.transferTo(file);
-			
-		product.setFileName(cmf.getOriginalFilename());
-		System.out.println("addProduct : POST");
-		productService.addProduct(product);
-*/
-		return new ModelAndView("forward:/product/addProductResult.jsp","product",product);
+		if(menu!=null && menu.equals("manage")) {
+			return "forward:/product/updateProductView.jsp?menu=manage";
+		}else {
+			return "forward:/product/getProduct.jsp";
+		}
 	}
-
-	@RequestMapping("listProduct")
-	public ModelAndView listProduct(@RequestParam("menu") String menu, 
-									@ModelAttribute("search") Search search)
-			throws Exception {
-
-		System.out.println("listProduct/"+menu);
-
-		if (search.getCurrentPage() == 0) {
+	
+	@RequestMapping(value="/updateProduct", method=RequestMethod.GET)
+	public String updateProduct() throws Exception{
+		System.out.println("/product/updateProduct : GET");	
+		
+		return "forward:/product/updateProductView.jsp";
+	}
+	
+	@RequestMapping(value="/updateProduct", method=RequestMethod.POST)
+	public String updateProduct(@ModelAttribute("product") Product product) throws Exception{
+		System.out.println("/product/updateProduct : POST");
+		
+		productService.updateProduct(product);
+		
+		return "forward:/product/getProduct";
+	}
+	
+	@RequestMapping("/deleteProduct")
+	public String deleteProduct(@RequestParam("prodNo") int prodNo) throws Exception{
+		System.out.println("/product/deleteProduct");
+		
+		productService.deleteProduct(prodNo);
+		
+		return "redirect:/product/listProduct?menu=manage";
+	}
+	
+	@RequestMapping("/listProduct")
+	public String listProduct(@ModelAttribute("search") Search search, Model model) throws Exception{
+		System.out.println("/listProduct");
+		
+		if(search.getCurrentPage() ==0 ){
 			search.setCurrentPage(1);
 		}
 		search.setPageSize(pageSize);
-
+		
 		Map<String, Object> map = productService.getProductList(search);
-		Page resultPage = new Page(search.getCurrentPage(), 
-								   ((Integer) map.get("totalCount")).intValue(),
-								   pageUnit,
-								   search.getPageSize());
 		
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("listProduct");
-		modelAndView.addObject("menu", menu);
-		modelAndView.addObject("list", map.get("list"));
-		modelAndView.addObject("resultPage", resultPage);
-		modelAndView.addObject("search", search);
+		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		System.out.println(resultPage);
+		
+		model.addAttribute("list", map.get("list"));
+		model.addAttribute("resultPage", resultPage);
+		model.addAttribute("search", search);
 
-		return new ModelAndView("forward:/product/listProduct.jsp");
+		return "forward:/product/listProduct.jsp";
 	}
 
-	@RequestMapping(value="getProduct" , method = RequestMethod.GET)
-	public ModelAndView getProduct( @RequestParam("menu") String menu,
-									@RequestParam("prodNo") int prodNo, 
-									HttpServletRequest request, 
-									HttpServletResponse response) throws Exception {
-
-		System.out.println("getProduct/"+menu);
-
-		Product product = productService.getProduct(prodNo);
-		setCookie(request, response);
-		String viewName = menu.equals("manage")?"forward:/product/updateProductView.jsp":"forward:/product/getProduct.jsp";
-		
-		
-		String[] fileList = product.getFileName().split("/");
-		
-		System.out.println("viewName = "+viewName);
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName(viewName);
-		modelAndView.addObject("product", product);
-		modelAndView.addObject("menu",menu);
-		//¿«Ω… 1  *^^*
-		modelAndView.addObject("fileList",fileList);
-		
-		return modelAndView;
-	}
-	
-	@RequestMapping(value="updateProduct" , method = RequestMethod.GET)
-	public ModelAndView updateProduct( @RequestParam("prodNo") int prodNo ) throws Exception {
-
-		System.out.println("updateProduct/"+prodNo);
-		
-		return new ModelAndView("forward:/product/updateProductView.jsp","product",productService.getProduct(prodNo));
-	}
-	
-	@RequestMapping(value="updateProduct" , method = RequestMethod.POST)
-	public ModelAndView updateProduct( @ModelAttribute("product") Product product ) throws Exception {
-		
-		System.out.println("updateProduct : POST");
-		
-		productService.updateProduct(product);
-		product = productService.getProduct(product.getProdNo());
-		
-		return new ModelAndView("forward:/product/getProduct.jsp","product", product);
-		
-	}
-
-	private void setCookie(HttpServletRequest request, HttpServletResponse response) {
-
-		Cookie[] cookies = request.getCookies();
-		String history = "";
-		
-		String newHistory = request.getParameter("prodNo")+",";
-		
-		for (Cookie cookie : cookies) {
-			System.out.println("ƒÌ≈∞∆˜πÆ ¿Ã∏ß:"+cookie.getName());
-			if (cookie.getName().equals("history")) {
-				System.out.println("historyƒÌ≈∞¿÷¿Ω");
-				if (cookie.getValue().contains(newHistory)) {
-					System.out.println("∞∞¿∫¿Ã∏ß∞°¡¯ ƒÌ≈∞∞™¿÷¿Ω");
-					history = cookie.getValue();
-				} else {
-					System.out.println("∞∞¿∫¿Ã∏ß∞°¡¯ ƒÌ≈∞∞™æ¯¿Ω");
-					history = newHistory+cookie.getValue();
-				}
-				cookie.setValue(history);
-				cookie.setMaxAge(-1);
-				response.addCookie(cookie);
-				break;
-			} else {
-				System.out.println("historyƒÌ≈∞æ¯¿Ω");
-				response.addCookie(new Cookie("history", newHistory));
-				System.out.println("historyƒÌ≈∞ª˝º∫");
-			}
-		}
-		System.out.println("===========history"+history);
-		
-	}
 
 }
