@@ -54,6 +54,7 @@ public class ProductController {
 		
 		return "redirect:/product/addProductView.jsp";
 	}
+	/*
 	@RequestMapping(value="addProduct", method=RequestMethod.POST)
 	public String addProduct(@ModelAttribute("product") Product product) throws Exception{
 		
@@ -63,10 +64,10 @@ public class ProductController {
 		productService.addProduct(product);
 		return "redirect:/product/listProduct.jsp";
 	}
+	*/
 	
-	/*
-	@RequestMapping(value="/addProduct", method=RequestMethod.POST)
-	public String addProduct(@ModelAttribute("product") Product product,
+	/*@RequestMapping(value="/addProduct", method=RequestMethod.POST)
+	public File addProduct(@ModelAttribute("product") Product product,
 			@RequestParam("fileNameForReal") MultipartFile file) throws Exception{
 		System.out.println("/product/addProduct : POST" + product);
 		
@@ -79,20 +80,20 @@ public class ProductController {
 			String filePath = "/upload/"+originalFileName;
 			File dest = new File(filePath);
 			
-			/*
-			 * // 업로드 디렉토리가 없으면 생성 
-			 * if (!dest.getParentFile().exists()) {
-			 * dest.getParentFile().mkdirs(); 
-			 * }
+			
+			 // 업로드 디렉토리가 없으면 생성 
+			 //if (!dest.getParentFile().exists()) {
+			 //dest.getParentFile().mkdirs(); 
+			 //}
 			 	
 			//저장
 			file.transferTo(dest);
 		}
 		
 		productService.addProduct(product);
-		return "redirect:/product/addProduct.jsp";
+		"redirect:/product/addProduct.jsp";
 	}
-	*/
+	
 /*	@RequestMapping(value="/addProduct", method=RequestMethod.POST)
 	public String addProduct(@ModelAttribute("product") Product product) throws Exception{
 		System.out.println("/product/addProduct : POST");

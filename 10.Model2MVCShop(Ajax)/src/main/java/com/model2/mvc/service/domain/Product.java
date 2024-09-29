@@ -1,5 +1,6 @@
 package com.model2.mvc.service.domain;
 
+import java.io.File;
 import java.sql.Date;
 
 
@@ -10,10 +11,11 @@ public class Product {
 	private String prodDetail;
 	private String manuDate;
 	private int price;
-	private String fileName;
+	//private String fileName;
 	private Date regDate;
 	private String proTranCode;
 	private int count;
+	private File fileName;
 	//priceAsc
 	
 	public Product() {
@@ -59,12 +61,12 @@ public class Product {
 		this.price = price;
 	}
 
-	public String getFileName() {
+	public File getFileName() {
 		return fileName;
 	}
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setFileName(File originalFileName) {
+		this.fileName = originalFileName;
 	}
 
 	public Date getRegDate() {
