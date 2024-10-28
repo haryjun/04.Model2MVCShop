@@ -10,10 +10,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
@@ -185,4 +188,17 @@ public class UserController {
 		
 		return "forward:../coupon.jsp";
 	}
+	
+	
+	  @RequestMapping(value = "/login/kakao/code",method=RequestMethod.POST)//products = "application/json" 
+	  public String kakaoLogin(@RequestParam("code") String code, RedirectAttributes ra,HttpSession session) throws Exception { 
+	  return "kakao LoginCode" + code;
+	  }
+	 
+
+	
+	//@GetMapping("/login/kakao/code")
+	//public @ResponseBody String kakaoCallBack(String code) {
+		//return code;
+	//}
 }

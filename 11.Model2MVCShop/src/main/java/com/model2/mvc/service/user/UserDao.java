@@ -30,4 +30,6 @@ public interface UserDao {
 		
 	public List<String> getAutoComplete(Search search) throws Exception;
 	
+	public User getKakaoUser(String kakaoId) throws Exception;
+	
 }

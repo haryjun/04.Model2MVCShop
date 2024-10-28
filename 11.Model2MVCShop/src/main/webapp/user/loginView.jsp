@@ -24,6 +24,8 @@
         	border: 3px solid #D6CDB7;
             margin-top: 10px;
         }
+        
+      
     </style>
     
     <!--  ///////////////////////// JavaScript ////////////////////////// -->
@@ -55,7 +57,14 @@
 			});
 		});	
 		
-		
+		/* //==> kakao로그인
+		$( function() {
+			
+			$("a[href='#' ]").on("click" , function() {
+				self.location = "/user/addUser"
+			});
+		});
+		 */
 		//============= 회원원가입화면이동 =============
 		$( function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
@@ -111,9 +120,14 @@
 					  </div>
 					  
 					  <div class="form-group">
-					    <div class="col-sm-offset-4 col-sm-6 text-center">
-					      <button type="button" class="btn btn-primary"  >로 &nbsp;그 &nbsp;인</button>
-					      <a class="btn btn-primary btn" href="#" role="button">회 &nbsp;원 &nbsp;가 &nbsp;입</a>
+					    <div> <!-- class="col-sm-offset-4 col-sm-6 " -->
+					    <p style = "text-align:center">
+					      <button type="button" class="btn btn-primary">로 그 인</button>
+					      <a href="https://kauth.kakao.com/oauth/authorize?client_id=471c7f77c859f71bc21391e417babe83&redirect_uri=http://192.168.0.25:8081/login/kakao/code&response_type=code">
+					      <img height = "33px" src = "/images/kakao_login_medium_narrow.png"></a>
+					      <a href = "#"><img height = "33px" src = "/images/googleLogin.png"> </a><br><br>
+					      <a class="btn btn-primary btn" href="#" role="button">회 원 가 입</a>
+					      </p>
 					    </div>
 					  </div>
 			

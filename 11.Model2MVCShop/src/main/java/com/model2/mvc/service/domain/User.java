@@ -26,7 +26,9 @@ public class User {
 	private String discountCoupon10;
 	private Coupon coupon;
 	////////////////////////////////////////////////
-
+	private String kakaoId;
+	private String profile_nickname;
+	private String profile_image;
 	
 	
 	///Constructor
@@ -152,5 +154,34 @@ public class User {
 
 	public void setCoupon(Coupon coupon) {
 		this.coupon = coupon;
+	}
+
+	
+////////////////////////////////////////////////////////////////
+///////////////////////kakao Login//////////////////////////////
+////////////////////////////////////////////////////////////////
+	
+	public String getKakaoId() {
+		return kakaoId;
+	}
+
+	public void setKakaoId(String kakaoId) {
+		this.kakaoId = kakaoId;
+	}
+
+	public String getProfile_nickname() {
+		return profile_nickname;
+	}
+
+	public void setProfile_nickname(String profile_nickname) {
+		this.profile_nickname = profile_nickname;
+	}
+
+	public String getProfile_image() {
+		return profile_image;
+	}
+
+	public void setProfile_image(String profile_image) {
+		this.profile_image = profile_image;
 	}
 }

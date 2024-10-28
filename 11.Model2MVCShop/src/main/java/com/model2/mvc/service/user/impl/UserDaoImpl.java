@@ -63,4 +63,9 @@ public class UserDaoImpl implements UserDao{
 		return sqlSession.selectList("UserMapper.getAutoComplete", search);
 	}
 
+	@Override
+	public User getKakaoUser(String kakaoId) throws Exception {
+		return sqlSession.selectOne("UserMapper.getUser2", kakaoId);
+	}
+
 }

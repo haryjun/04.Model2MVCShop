@@ -28,7 +28,9 @@ public interface UserService {
 	//ÄíÆù ¹ß±Þ
 	public void addCoupon(String couponId, User user) throws Exception;
 		
-		//autoComplete
+	//autoComplete
 	public List<String> autoCompleteUser(Search search) throws Exception;
 	
+	public User getKakaoUser(String kakaoId) throws Exception;
+
 }

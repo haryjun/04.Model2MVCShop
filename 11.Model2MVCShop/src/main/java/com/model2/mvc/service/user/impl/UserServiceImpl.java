@@ -80,9 +80,9 @@ public class UserServiceImpl implements UserService{
 			user.setCoupon(coupon);	
 			userDao.addCoupon(user);
 		}else if(couponId==null) {
-			System.out.println("쿠폰아이디 널");
+			System.out.println("쿠폰아이디 null");
 		}else {
-			System.out.println("쿠폰아이디 널도아니고 몰라");
+			System.out.println("쿠폰아이디 whyrano");
 		}
 		
 		return;
@@ -93,6 +93,12 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		
 		return userDao.getAutoComplete(search);
+	}
+
+	@Override
+	public User getKakaoUser(String kakaoId) throws Exception {
+		// TODO Auto-generated method stub
+		return userDao.getKakaoUser(kakaoId);
 	}
 
 }

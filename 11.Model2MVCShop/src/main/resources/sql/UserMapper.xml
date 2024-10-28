@@ -9,17 +9,20 @@
  	
 	<resultMap id="userSelectMap" type="user">
 		<result property="userId" 			column="user_id" 			jdbcType="VARCHAR"/>
-		<result property="userName"	column="user_name" 		jdbcType="VARCHAR" />
-		<result property="password" 	column="password" 		jdbcType="VARCHAR" />
-		<result property="role" 				column="role" 					jdbcType="VARCHAR" />
-		<result property="ssn" 				column="ssn" 					jdbcType="VARCHAR" />
+		<result property="userName"			column="user_name" 			jdbcType="VARCHAR" />
+		<result property="password" 		column="password" 			jdbcType="VARCHAR" />
+		<result property="role" 			column="role" 				jdbcType="VARCHAR" />
+		<result property="ssn" 				column="ssn" 				jdbcType="VARCHAR" />
 		<result property="phone" 			column="cell_phone" 		jdbcType="VARCHAR" />
-		<result property="addr" 				column="addr" 					jdbcType="VARCHAR" />
+		<result property="addr" 			column="addr" 				jdbcType="VARCHAR" />
 		<result property="email" 			column="email" 				jdbcType="NUMERIC"  />
-		<result property="regDate" 		column="reg_date" 			jdbcType="DATE" />
-		<association property="coupon" javaType="com.model2.mvc.common.Coupon">
-			<result property="discountCoupon10" column="discount_coupon10" jdbcType="CHAR"/>
-			</association>
+		<result property="regDate" 			column="reg_date" 			jdbcType="DATE" />
+		<result property="kakaoId" 			column="kakao_id" 			jdbcType="VARCHAR"/>
+		<result property="nickname" 		column="profile_nickname" 	jdbcType="VARCHAR"/>
+		<result property="profileImage" 	column="profile_image" 		jdbcType="VARCHAR"/>
+		<association property="coupon" 		javaType="com.model2.mvc.common.Coupon">
+			<result property="discountCoupon10" column="discount_coupon10" 	jdbcType="CHAR"/>
+		</association>
 	</resultMap>
 	
 	<sql id="user_coupon_column">
@@ -135,4 +138,30 @@
 	ORDER BY user_id 
 	</select> 
 	
+	
+	<!-- kakaoLogin __ getKakao -->
+	<insert id="getKakao" parameterType="user" >
+	 	INSERT
+		INTO kakao(kakao_id, profile_nickname , profile_image) 
+		VALUES (#{kakaoId}, #{nickname:VARCHAR}, #{profileImage:VARCHAR})
+	</insert>
+	
+	<!-- kakaoLogin __ addKakao -->
+	<insert id="addKakao" parameterType="user">
+		INSERT
+		INTO kakao(kakao_id, profile_nickname, profile_image)
+		VALUES(#{kakaoId}, #{nickname:VARCHAR}, #{profileImage:VARCHAR})
+	</insert>
+	
+	
+	<!-- kakaoLogin __ getUser2 -->
+	 <select 	id="getUser2" parameterType="string" resultMap="userSelectMap">
+		SELECT
+			u.user_id , user_name , password , role ,  cell_phone ,  addr , email , reg_date, 
+		<include refid="user_coupon_column"/>, 		
+		FROM users u 
+			LEFT OUTER JOIN user_coupon uc ON uc.user_id=u.user_id
+			LEFT OUTER JOIN kakao k ON k.kakao_id=u.kakao_id
+		WHERE k.kakao_id = #{value}
+	</select>
 </mapper>
