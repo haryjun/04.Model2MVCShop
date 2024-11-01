@@ -75,13 +75,18 @@
 	</select> 
 
 	<!-- SQL : INSERT -->
-	<insert id="addProduct" parameterType="product">
+	<!-- <insert id="addProduct" parameterType="product">
 		INSERT
 		INTO product( prod_no , prod_name , prod_detail , manufacture_day ,
 		price, image_file, reg_date, stock, quantity)
 		VALUES ( seq_product_prod_no.nextval,
 		#{prodName},#{prodDetail:VARCHAR},#{manuDate:VARCHAR},#{price:NUMERIC},#{fileName:VARCHAR},SYSDATE, #{quantity}, #{quantity})
-	</insert>
+	</insert> -->
+	<insert id="addProduct" parameterType="product" useGeneratedKeys="true" keyProperty="prodNo" keyColumn="prod_no">
+    INSERT INTO product (prod_no, prod_name, prod_detail, manufacture_day, price, image_file, reg_date, stock, quantity)
+    VALUES (seq_product_prod_no.nextval, #{prodName}, #{prodDetail}, #{manuDate}, #{price}, #{fileName}, SYSDATE, #{stock}, #{quantity})
+</insert>
+	
 
 	<!-- SQL : SELECT ONE -->
 	<select id="findProduct" parameterType="int" resultMap="productSelectMap">
